@@ -56,10 +56,9 @@ $(function () {
                 $('#sidebar').toggleClass('active');
             });
             //----add cat list----
-            /*
+
             this.catListElem = document.getElementById("cat-list");
-            */
-            this.catListElem = $('#cat-list')[0];
+            console.log(this.catListElem);
 
             this.render();
         },
@@ -78,43 +77,6 @@ $(function () {
 
                 this.catListElem.append(item);        
             }, this);        
-            
-            /*
-            for (i = 0; i < cats.length; i++) {
-                // this is the cat we're currently looping over
-                cat = cats[i];
-
-                // make a new cat list item and set its text
-                elem = document.createElement('li');
-                elem.textContent = cat.name;
-
-                // on click, setCurrentCat and render the catView
-                // (this uses our closure-in-a-loop trick to connect the value
-                //  of the cat variable to the click event function)
-                elem.addEventListener('click', (function (catCopy) {
-                    return function () {
-                        octopus.setCurrentCat(catCopy);
-                        catView.render();
-                    };
-                })(cat));
-
-                // finally, add the element to the list
-                this.catListElem.appendChild(elem);
-            }
-            */
-            /*
-
-            cats.forEach(function (cat, index) {
-
-                let sidebarHtmlSection = `<li class='sidebarItem'>${cat.name}</li>`;
-                $('.list-unstyled').append(sidebarHtmlSection);
-                $('.sidebarItem:last').click(function () {
-                    octopus.setCurrentCat(cat);
-                    catView.render();
-                })
-
-            })
-            */
         }
     }
     var catView = {

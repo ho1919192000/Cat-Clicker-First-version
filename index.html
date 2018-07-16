@@ -7,9 +7,10 @@
 <head>
 
     <meta charset="UTF-8">
+    <!--
     <META HTTP-EQUIV='Content-Security-Policy' CONTENT="default-src 'self' ; script-src 'self' 'unsafe-inline' *.disqus.com a.disquscdn.com requirejs.org www.google-analytics.com; style-src 'self' 'unsafe-inline' a.disquscdn.com; img-src 'self' *; media-src 'self' ; frame-src disqus.com;">
     <title>Cat Clicker</title>
-
+    -->
     <meta name="Author" content="Howard Huang" />
 
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
@@ -21,8 +22,6 @@
     <!-- Our Custom CSS -->
 
     <link rel="stylesheet" href="css/custom.css">
-
-
 
 </head>
 
@@ -52,7 +51,7 @@
 
             <!-- Sidebar Links -->
 
-            <ul class="list-unstyled components">
+            <ul id="cat-list" class="list-unstyled components">
 
                 <!-- <li class="active"><a href="#">Home</a></li>
 
@@ -108,13 +107,21 @@
 
                     <img id="catPic" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/220px-Cat03.jpg" alt="">
 
-                    <p><span id="catId">1</span>. <span id="catName">John</span></p>
+                    <p><span id="catName">John</span></p>
 
                 </div>
+                <p><br></p>
 
                 <div class="line"></div>
 
                 <p><span id="catLikes">0</span> ♥</p>
+                <p><br></p>
+                <form action="">
+                    <div class="form-group">
+                        <label for="src">Image URL: </label>
+                        <input type="url">
+                    </div>
+                </form>
 
             </div>
 
@@ -144,7 +151,6 @@
     <script src="app.js"></script>
 
 </body>
-
 
 
 </html>
