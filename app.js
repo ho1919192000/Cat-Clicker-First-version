@@ -1,6 +1,8 @@
 $(function () {
+    /*----model----*/
     let model = {
-        data: [{
+        currentCat: null,
+        cats: [{
             src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/220px-Cat03.jpg',
             name: 'John',
             likes: 0
@@ -20,75 +22,123 @@ $(function () {
             src: 'https://information-upload.s3.amazonaws.com/images/DRPaEs9WVivHAC0e3IlUDBqirJDtBzAQzMgpNlu0.jpeg',
             name: 'WTF',
             likes: 0
-        }],
-        getAllCats: function () {
-            return this.data;
-        },
-        getOneCat: function (index) {
-            return this.data[index];
-        }
-    };
-
-    let octopus = {
-        getCats: function () {
-            return model.getAllCats();
-        },
-        getCat: function (id) {
-            let index = id - 1;
-            return model.getOneCat(index); //index start with 0
-        },
-        countLikes: function (id) {
-            let index = id - 1;
-            model.data[index].likes++;
-            let like = model.getOneCat(index).likes;
-            view2.updateLikes(like);
-        },
-        init: function () {
-            view1.init();
-            view2.init();
-        }
+        }]
     }
+    /*----octopus----*/
+    var octopus = {
+        init: function () {
+            model.currentCat = model.cats[0];
+            catView.init();
+            catListView.init();
 
-    let view1 = {
+        },
+        getCurrentCat: function () {
+            return model.currentCat;
+        },
+        getCats: function () {
+            return model.cats;
+        },
+        setCurrentCat: function (cat) {
+            model.currentCat = cat;
+        },
+        incrementCount: function () {
+            model.currentCat.likes++;
+            catView.render();
+        }
+
+    }
+    /*----view----*/
+    var catListView = {
+
         init: function () {
             //----toggle btn----
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
-            //----add event listener----
+            //----add cat list----
+            /*
+            this.catListElem = document.getElementById("cat-list");
+            */
+            this.catListElem = $('#cat-list')[0];
+
+            this.render();
+        },
+        render: function () {
+            this.catListElem.innerHTML = '';
             let cats = octopus.getCats();
+
+            cats.forEach(function(cat){
+                let item = document.createElement('li');
+                item.textContent = cat.name;
+                item.addEventListener('click', function() {
+                    console.log(item);
+                    octopus.setCurrentCat(cat);
+                    catView.render()
+                })
+
+                this.catListElem.append(item);        
+            }, this);        
+            
+            /*
+            for (i = 0; i < cats.length; i++) {
+                // this is the cat we're currently looping over
+                cat = cats[i];
+
+                // make a new cat list item and set its text
+                elem = document.createElement('li');
+                elem.textContent = cat.name;
+
+                // on click, setCurrentCat and render the catView
+                // (this uses our closure-in-a-loop trick to connect the value
+                //  of the cat variable to the click event function)
+                elem.addEventListener('click', (function (catCopy) {
+                    return function () {
+                        octopus.setCurrentCat(catCopy);
+                        catView.render();
+                    };
+                })(cat));
+
+                // finally, add the element to the list
+                this.catListElem.appendChild(elem);
+            }
+            */
+            /*
+
             cats.forEach(function (cat, index) {
+
                 let sidebarHtmlSection = `<li class='sidebarItem'>${cat.name}</li>`;
                 $('.list-unstyled').append(sidebarHtmlSection);
                 $('.sidebarItem:last').click(function () {
-                    view2.displayCat(index+1);
+                    octopus.setCurrentCat(cat);
+                    catView.render();
                 })
+
             })
+            */
         }
     }
-    let view2 = { //increase likes
+    var catView = {
         init: function () {
-            $('#picHolder').click(function () {
-                let id = parseInt($('#catId').text());
-                octopus.countLikes(id);
-            })
             this.catPic = $('#catPic');
             this.catName = $('#catName');
             this.catLikes = $('#catLikes');
-            this.catId = $('#catId'); 
-            this.displayCat(1);
+            this.picHolder = $('#picHolder');
+
+            this.picHolder.click(function () {
+                octopus.incrementCount();
+            });
+
+            this.render();
         },
-        displayCat: function (id) {
-            let cat = octopus.getCat(id);
-            this.catPic.attr('src', cat.src);
-            this.catName.text(cat.name);
-            this.catLikes.text(cat.likes);
-            this.catId.text(id);
-        },
-        updateLikes: function(like) {
-            $('#catLikes').text(like);
+        render: function () {
+            let currentCat = octopus.getCurrentCat();
+            this.catPic.attr('src', currentCat.src);
+            this.catName.text(currentCat.name);
+            this.catLikes.text(currentCat.likes);
         }
     }
-    
+
     octopus.init();
+
+
 })
