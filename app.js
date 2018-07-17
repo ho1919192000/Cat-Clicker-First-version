@@ -30,6 +30,7 @@ $(function () {
             model.currentCat = model.cats[0];
             catView.init();
             catListView.init();
+            catAdmin.init();
 
         },
         getCurrentCat: function () {
@@ -58,7 +59,6 @@ $(function () {
             //----add cat list----
 
             this.catListElem = document.getElementById("cat-list");
-            console.log(this.catListElem);
 
             this.render();
         },
@@ -66,17 +66,17 @@ $(function () {
             this.catListElem.innerHTML = '';
             let cats = octopus.getCats();
 
-            cats.forEach(function(cat){
+            cats.forEach(function (cat) {
                 let item = document.createElement('li');
                 item.textContent = cat.name;
-                item.addEventListener('click', function() {
+                item.addEventListener('click', function () {
                     console.log(item);
                     octopus.setCurrentCat(cat);
                     catView.render()
                 })
 
-                this.catListElem.append(item);        
-            }, this);        
+                this.catListElem.append(item);
+            }, this);
         }
     }
     var catView = {
@@ -97,6 +97,34 @@ $(function () {
             this.catPic.attr('src', currentCat.src);
             this.catName.text(currentCat.name);
             this.catLikes.text(currentCat.likes);
+        }
+    }
+    var catAdmin = {
+        init: function () {
+
+            let adminBtn = $('#adminBtn');
+            this.adminForm = $('#admin-form');
+            adminBtn.click(function () {
+                console.log(this.adminForm);
+                if (this.adminForm.css('visibility') === 'hidden') {
+                    this.adminForm.css('visibility', 'visible')
+                } else {
+                    this.adminForm.css('visibility', 'hidden')
+                }
+            }.bind(this));
+            
+            /*
+            let adminBtn = document.getElementById('adminBtn');
+            this.adminForm = document.getElementById('admin-form');
+            adminBtn.addEventListener('click', function () {
+                console.log(this.adminForm);
+                if (this.adminForm.css('visibility') === 'hidden') {
+                    this.adminForm.css('visibility', 'visible')
+                } else {
+                    this.adminForm.css('visibility', 'hidden')
+                }
+            }.bind(this))
+            */
         }
     }
 
