@@ -70,7 +70,6 @@ $(function () {
                 let item = document.createElement('li');
                 item.textContent = cat.name;
                 item.addEventListener('click', function () {
-                    console.log(item);
                     octopus.setCurrentCat(cat);
                     catView.render()
                 })
@@ -103,28 +102,44 @@ $(function () {
         init: function () {
 
             let adminBtn = $('#adminBtn');
+            //form element
             this.adminForm = $('#admin-form');
+            this.formName = $('#name');
+            this.formSrc = $('#src');
+            this.formLikes = $('#likes');
+
             adminBtn.click(function () {
-                console.log(this.adminForm);
-                if (this.adminForm.css('visibility') === 'hidden') {
-                    this.adminForm.css('visibility', 'visible')
-                } else {
-                    this.adminForm.css('visibility', 'hidden')
-                }
+                this.adminForm.css('visibility', 'visible')
             }.bind(this));
+
+            let cancel = $('#cancel');
+            let update = $('#update');
+
+            cancel.click(function () {
+                event.preventDefault();
+                this.btnDisappear();
+            }.bind(this));
+
+            update.click(function () {
+                event.preventDefault();
+                let cat = octopus.getCurrentCat();
+
+                cat.src = this.formSrc.val();
+                cat.name = this.formName.val();
+                cat.likes = this.formLikes.val();
+
+                catListView.render();
+                catView.render();
+
+                this.btnDisappear();
+            }.bind(this));
+        },
+        btnDisappear: function () {
             
-            /*
-            let adminBtn = document.getElementById('adminBtn');
-            this.adminForm = document.getElementById('admin-form');
-            adminBtn.addEventListener('click', function () {
-                console.log(this.adminForm);
-                if (this.adminForm.css('visibility') === 'hidden') {
-                    this.adminForm.css('visibility', 'visible')
-                } else {
-                    this.adminForm.css('visibility', 'hidden')
-                }
-            }.bind(this))
-            */
+            this.formName.val('');
+            this.formSrc.val('');
+            this.formLikes.val('');
+            this.adminForm.css('visibility', 'hidden')
         }
     }
 
